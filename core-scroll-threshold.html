@@ -28,7 +28,17 @@ events (e.g. all data has been exhausted), the
 
 Example:
 
-    <core-image src="http://lorempixel.com/400/400"></core-image>
+    <core-scroll-threshold id="threshold" lowerThreshold="500" 
+      on-lower-triggered="{{loadMore}}" lowerTriggered="{{spinnerShouldShow}}">
+    </scroll-threshold>
+
+    ...
+
+    loadMore: function() {
+      this.asyncLoadStuffThen(function() {
+        this.$.threshold.clearLower();
+      }.bind(this));
+    }
     
 @group Polymer Core Elements
 @element core-image
@@ -47,7 +57,8 @@ Example:
 
       /**
        * When set, the given element is observed for scroll position.  When undefined,
-       * scroll events bubling from children will be observed.
+       * children can be placed inside and element itself can be used as the scrollable
+       * element.
        *
        * @attribute scrollTarget
        * @type string
@@ -58,27 +69,27 @@ Example:
       /**
        * Orientation of the scroller to be observed (`v` for vertical, `h` for horizontal)
        *
-       * @attribute upperThresholdTriggered
+       * @attribute orient
        * @type boolean
        * @default 'v'
        */
       orient: 'v',
 
       /**
-       * The upper threshold at which to trigger, in pixels from the top (for `orient="v"`)
-       * or left (for `orient="h"`).  When null, no event is triggered.
+       * Distance from the top (or left, for horizontal) bound of the scroller
+       * where the "upper trigger" will fire.
        *
-       * @attribute upperThresholdTriggered
+       * @attribute upperThreshold
        * @type integer
        * @default null
        */
       upperThreshold: null,
 
       /**
-       * The upper threshold at which to trigger, in pixels from the top (for `orient="v"`)
-       * or left (for `orient="h"`).  When null, no event is triggered.
+       * Distance from the bottom (or right, for horizontal) bound of the scroller
+       * where the "lower trigger" will fire.
        *
-       * @attribute upperThresholdTriggered
+       * @attribute lowerThreshold
        * @type integer
        * @default false
        */
@@ -87,7 +98,7 @@ Example:
       /**
        * Read-only value that tracks the triggered state of the upper threshold
        *
-       * @attribute upperThresholdTriggered
+       * @attribute upperTriggered
        * @type boolean
        * @default false
        */
@@ -96,7 +107,7 @@ Example:
       /**
        * Read-only value that tracks the triggered state of the lower threshold
        *
-       * @attribute lowerThresholdTriggered
+       * @attribute lowerTriggered
        * @type boolean
        * @default false
        */
@@ -124,6 +135,10 @@ Example:
         this._scrollTarget = target;
         this._scrollTarget.addEventListener('scroll', this._boundScrollHandler);
       }
+
+      // If we're listening on ourself, make us auto in case someone put
+      // content inside
+      this.style.overflow = (target == this) ? 'auto' : null;
 
       // Setup extents based on orientation
       this.scrollPosition = (this.orient == 'v') ? 'scrollTop' : 'scrollLeft';
@@ -160,7 +175,7 @@ Example:
     /**
      * Clear the upper threshold, following an `upper-trigger` event.
      *
-     * @method clearLower
+     * @method clearUpper
      */
     clearUpper: function(waitForMutation) {
       if (waitForMutation) {
