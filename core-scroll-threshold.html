@@ -18,7 +18,7 @@ region with the same orientation as this element is contained within.  Alternati
 the `scrollTarget` property can be set/bound to a non-child scrollable region, from which
 it will listen for events.
 
-Once a threshold has been reached, a `lower-threshold` or `upper-threshold` event will
+Once a threshold has been reached, a `lower-trigger` or `upper-trigger` event will
 be fired, at which point the user may perform actions such as lazily-loading more data
 to be displayed.  After any work is done, the user must then clear the threshold by
 calling the `clearUpper` or `clearLower` methods on this element, after which it will
@@ -29,7 +29,7 @@ events (e.g. all data has been exhausted), the
 Example:
 
     <core-scroll-threshold id="threshold" lowerThreshold="500" 
-      on-lower-triggered="{{loadMore}}" lowerTriggered="{{spinnerShouldShow}}">
+      on-lower-trigger="{{loadMore}}" lowerTriggered="{{spinnerShouldShow}}">
     </scroll-threshold>
 
     ...
