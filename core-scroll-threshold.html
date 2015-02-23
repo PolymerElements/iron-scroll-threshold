@@ -30,7 +30,7 @@ triggered property.
 
 Example:
 
-    <core-scroll-threshold id="threshold" lowerThreshold="500" 
+    <core-scroll-threshold id="threshold" lowerThreshold="500"
       on-lower-trigger="{{loadMore}}" lowerTriggered="{{spinnerShouldShow}}">
     </core-scroll-threshold>
 
@@ -41,10 +41,21 @@ Example:
         this.$.threshold.clearLower();
       }.bind(this));
     }
-    
+
 @group Polymer Core Elements
 @element core-scroll-threshold
 @homepage github.io
+-->
+
+<!--
+Fired when `upperTriggered` becomes `true`.
+
+@event upper-trigger
+-->
+<!--
+Fired when `lowerTriggered` becomes `true`.
+
+@event lower-trigger
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -54,7 +65,7 @@ Example:
 <script>
 
   Polymer({
-    
+
     publish: {
 
       /**
@@ -153,7 +164,7 @@ Example:
       }
       if (!this.lowerThreshold) {
         this.lowerTriggered = false;
-      }      
+      }
     },
 
     checkThreshold: function(e) {
