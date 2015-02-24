@@ -139,7 +139,7 @@ Fired when `lowerTriggered` becomes `true`.
     detached: function() {
       // Remove listener for any previous scroll target
       if (this._scrollTarget) {
-        this._scrollTarget.removeEventListener(this._boundScrollHandler);
+        this._scrollTarget.removeEventListener('scroll', this._boundScrollHandler);
       }
     },
 
@@ -148,7 +148,7 @@ Fired when `lowerTriggered` becomes `true`.
 
       // Remove listener for any previous scroll target
       if (this._scrollTarget && (this._scrollTarget != target)) {
-        this._scrollTarget.removeEventListener(this._boundScrollHandler);
+        this._scrollTarget.removeEventListener('scroll', this._boundScrollHandler);
       }
 
       // Add listener for new scroll target
@@ -182,8 +182,7 @@ Fired when `lowerTriggered` becomes `true`.
 
           // No longer fire scroll events if there's no lower threshold or it
           // has been triggered.
-          if (this.lowerThreshold === null ||
-              (this.lowerThreshold !== null && this.lowerTriggered)) {
+          if (this.lowerThreshold === null || this.lowerTriggered) {
             this._scrollTarget.removeEventListener('scroll', this._boundScrollHandler);
           }
 
@@ -198,8 +197,7 @@ Fired when `lowerTriggered` becomes `true`.
 
           // No longer fire scroll events if there's no upper threshold or it
           // has been triggered.
-          if (this.upperThreshold === null ||
-              (this.upperThreshold !== null && this.upperTriggered)) {
+          if (this.upperThreshold === null || this.upperTriggered) {
             this._scrollTarget.removeEventListener('scroll', this._boundScrollHandler);
           }
 
