@@ -1,5 +1,21 @@
-iron-scroll-threshold
-=========
+
+<!---
+
+This README is automatically generated from the comments in these files:
+iron-scroll-threshold.html
+
+Edit those files, and our readme bot will duplicate them over here!
+Edit this file, and the bot will squash your changes :)
+
+The bot does some handling of markdown. Please file a bug if it does the wrong
+thing! https://github.com/PolymerLabs/tedium/issues
+
+-->
+
+_[Demo and API Docs](https://elements.polymer-project.org/elements/iron-scroll-threshold)_
+
+
+##&lt;iron-scroll-threshold&gt;
 
 `iron-scroll-threshold` is a utility element that listens for `scroll` events from a
 scrollable region and fires events to indicate when the scroller has reached a pre-defined
@@ -60,3 +76,5 @@ triggered property.
   </iron-list>
 </iron-scroll-threshold>
 ```
+
+
