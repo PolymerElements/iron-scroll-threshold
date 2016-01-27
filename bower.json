@@ -24,6 +24,6 @@
   "devDependencies": {
     "iron-component-page": "polymerelements/iron-component-page#^1.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.2",
-    "web-component-tester": "polymer/web-component-tester#^3.4.0"
+    "web-component-tester": "^4.0.0"
   }
 }
