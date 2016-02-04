@@ -12,7 +12,7 @@ thing! https://github.com/PolymerLabs/tedium/issues
 
 -->
 
-_[Demo and API Docs](https://elements.polymer-project.org/elements/iron-scroll-threshold)_
+_[Demo and API docs](https://elements.polymer-project.org/elements/iron-scroll-threshold)_
 
 
 ##&lt;iron-scroll-threshold&gt;
