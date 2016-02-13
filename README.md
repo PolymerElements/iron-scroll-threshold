@@ -59,11 +59,9 @@ triggered property.
 
 ```html
 <iron-scroll-threshold on-lower-threshold="loadMoreData">
-  <dom-repeat items="[[items]]">
-    <template>
+  <template is="dom-repeat" items="[[items]]">
       <div>[[index]]</div>
-    </template>
-  </dom-repeat>
+  </template>
 </iron-scroll-threshold>
 ```
 
