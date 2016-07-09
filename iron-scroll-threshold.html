@@ -159,6 +159,8 @@ triggered property.
 
     _setOverflow: function(scrollTarget) {
       this.style.overflow = scrollTarget === this ? 'auto' : '';
+      // Enable smooth momentum-based scrolling on iOS
+      this.style['-webkit-overflow-scrolling'] = scrollTarget === this ? 'touch' : '';
     },
 
     _scrollHandler: function() {
