@@ -159,6 +159,7 @@ triggered property.
 
     _setOverflow: function(scrollTarget) {
       this.style.overflow = scrollTarget === this ? 'auto' : '';
+      this.style.webkitOverflowScrolling = scrollTarget === this ? 'touch' : '';
     },
 
     _scrollHandler: function() {
