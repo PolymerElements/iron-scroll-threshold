@@ -167,7 +167,7 @@ triggered property.
       var THROTTLE_THRESHOLD = 200;
       if (!this.isDebouncerActive('_checkTheshold')) {
         this.debounce('_checkTheshold', function() {
-          this.checkScrollThesholds();
+          this.checkScrollThresholds();
         }, THROTTLE_THRESHOLD);
       }
     },
@@ -176,7 +176,7 @@ triggered property.
       if (isAttached) {
         this.debounce('_init', function() {
           this.clearTriggers();
-          this.checkScrollThesholds();
+          this.checkScrollThresholds();
         });
       }
     },
@@ -185,9 +185,9 @@ triggered property.
      * Checks the scroll thresholds.
      * This method is automatically called by iron-scroll-threshold.
      *
-     * @method checkScrollThesholds
+     * @method checkScrollThresholds
      */
-    checkScrollThesholds: function() {
+    checkScrollThresholds: function() {
       if (!this.scrollTarget || (this.lowerTriggered && this.upperTriggered)) {
         return;
       }
@@ -206,6 +206,11 @@ triggered property.
         this._setLowerTriggered(true);
         this.fire('lower-threshold');
       }
+    },
+
+    checkScrollThesholds: function() {
+      // iron-scroll-threshold/issues/16
+      this.checkScrollThresholds();
     },
 
     /**
