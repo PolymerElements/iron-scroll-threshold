@@ -76,34 +76,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
   <body unresolved>
 
-    <template is="dom-bind" id="overlay" size="5">
+    <dom-bind id="overlay">
+      <template>
 
-      <div id="scrollingRegion">
-          <div class="toolbar">iron-scroll-threshold using a scrolling region</div>
-          <sample-content size="[[size]]"></sample-content>
-        <div class="loader">Fetching new items...</div>
-      </div>
+        <div id="scrollingRegion">
+            <div class="toolbar">iron-scroll-threshold using a scrolling region</div>
+            <sample-content size="[[size]]"></sample-content>
+          <div class="loader">Fetching new items...</div>
+        </div>
 
-     <!-- scroll-target uses #scrollingRegion -->
-      <iron-scroll-threshold id="scrollThreshold"
-        scroll-target="scrollingRegion"
-        lower-threshold="500"
-        on-lower-threshold="loadMoreData">
-      </iron-scroll-threshold>
+       <!-- scroll-target uses #scrollingRegion -->
+        <iron-scroll-threshold id="scrollThreshold"
+          scroll-target="scrollingRegion"
+          lower-threshold="500"
+          on-lower-threshold="loadMoreData">
+        </iron-scroll-threshold>
 
-    </template>
+        <script>
+          (function(scope) {
+            scope.size = 5;
+            scope.loadMoreData = function() {
+              // Simulate network delay
+              setTimeout(function() {
+                scope.size = +scope.size + 5;
+                scope.$.scrollThreshold.clearTriggers();
+              }, 500);
+            };
+          })(document.querySelector('#overlay'));
+        </script>
+        
+      </template>
+    </dom-bind>
 
-    <script>
-      (function(scope) {
-        scope.loadMoreData = function() {
-          // Simulate network delay
-          setTimeout(function() {
-            scope.size = +scope.size + 5;
-            scope.$.scrollThreshold.clearTriggers();
-          }, 500);
-        };
-      })(document.querySelector('#overlay'));
-    </script>
 
   </body>
 </html>

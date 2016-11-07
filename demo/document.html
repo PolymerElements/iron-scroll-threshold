@@ -68,37 +68,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
   <body unresolved>
 
-    <template is="dom-bind" id="overlay" size="5">
+    <dom-bind id="overlay">
+      <template>
 
-      <div class="toolbar">
-        <b>Document Scroll</b> |
-        Upper: [[upperTriggered]] -  Lower: [[lowerTriggered]]
-      </div>
+        <div class="toolbar">
+          <b>Document Scroll</b> |
+          Upper: [[upperTriggered]] -  Lower: [[lowerTriggered]]
+        </div>
 
-      <sample-content size="[[size]]"></sample-content>
-      <div class="loader">Fetching new items...</div>
+        <sample-content size="[[size]]"></sample-content>
+        <div class="loader">Fetching new items...</div>
 
-      <!-- scroll-target uses the document scroll -->
-      <iron-scroll-threshold id="scrollThreshold"
-        scroll-target="html"
-        lower-threshold="500"
-        lower-triggered="{{lowerTriggered}}"
-        on-lower-threshold="loadMoreData">
-      </iron-scroll-threshold>
+        <!-- scroll-target uses the document scroll -->
+        <iron-scroll-threshold id="scrollThreshold"
+          scroll-target="html"
+          lower-threshold="500"
+          lower-triggered="{{lowerTriggered}}"
+          on-lower-threshold="loadMoreData">
+        </iron-scroll-threshold>
 
-    </template>
+        <script>
+          (function(scope) {
+            scope.size = 5;
+            scope.loadMoreData = function() {
+              // Simulate network delay
+              setTimeout(function() {
+                scope.size = +scope.size + 5;
+                scope.$.scrollThreshold.clearTriggers();
+              }, 500);
+            };
+          })(document.querySelector('#overlay'));
+        </script>
 
-    <script>
-      (function(scope) {
-        scope.loadMoreData = function() {
-          // Simulate network delay
-          setTimeout(function() {
-            scope.size = +scope.size + 5;
-            scope.$.scrollThreshold.clearTriggers();
-          }, 500);
-        };
-      })(document.querySelector('#overlay'));
-    </script>
+      </template>
+    </dom-bind>
 
   </body>
 </html>
