@@ -71,33 +71,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
   <body unresolved>
 
-    <template is="dom-bind" id="overlay" size="5">
+    <dom-bind id="overlay">
+      <template>
 
-      <iron-scroll-threshold id="scrollThreshold" lower-threshold="500" on-lower-threshold="loadMoreData">
+        <iron-scroll-threshold id="scrollThreshold" lower-threshold="500" on-lower-threshold="loadMoreData">
 
-        <div class="toolbar">iron-scroll-threshold using a scrolling region</div>
+          <div class="toolbar">iron-scroll-threshold using a scrolling region</div>
 
-        <sample-content size="[[size]]"></sample-content>
+          <sample-content size="[[size]]"></sample-content>
 
-        <div class="loader">Fetching new items...</div>
+          <div class="loader">Fetching new items...</div>
 
-      </iron-scroll-threshold>
+        </iron-scroll-threshold>
 
-    </template>
+        <script>
+          (function(scope) {
+            scope.size = 5;
+            scope.loadMoreData = function(e) {
+              if (scope.size) {
+                // Simulate network delay
+                setTimeout(function() {
+                  scope.size = +scope.size + 5;
+                  scope.$.scrollThreshold.clearTriggers();
+                }, 500);
+              }
+            };
+          })(document.querySelector('#overlay'));
+        </script>
+      </template>
+    </dom-bind>
 
-    <script>
-      (function(scope) {
-        scope.loadMoreData = function(e) {
-          if (scope.size) {
-            // Simulate network delay
-            setTimeout(function() {
-              scope.size = +scope.size + 5;
-              scope.$.scrollThreshold.clearTriggers();
-            }, 500);
-          }
-        };
-      })(document.querySelector('#overlay'));
-    </script>
 
   </body>
 </html>
