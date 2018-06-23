@@ -14,10 +14,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <title>iron-scroll-threshold test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script src="../../../wct-browser-legacy/browser.js"></script>
 
-  <link rel="import" href="../iron-scroll-threshold.html">
+  <script type="module" src="../iron-scroll-threshold.js"></script>
 
   <style>
     #scrollingRegion {
@@ -51,173 +51,173 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
   </test-fixture>
 
-  <script>
+  <script type="module">
+import '../iron-scroll-threshold.js';
 
-    suite('basic features', function() {
-      var scrollThreshold;
+suite('basic features', function() {
+  var scrollThreshold;
 
-      setup(function() {
-        scrollThreshold = fixture('trivialScrollThreshold');
+  setup(function() {
+    scrollThreshold = fixture('trivialScrollThreshold');
+  });
+
+  teardown(function() {
+    scrollThreshold.clearTriggers();
+    scrollThreshold._scrollTop = 0;
+  });
+
+  test('default', function() {
+    assert.equal(scrollThreshold._defaultScrollTarget, scrollThreshold, '_defaultScrollTarget');
+    assert.equal(scrollThreshold.scrollTarget, scrollThreshold, 'scrollTarget');
+    assert.equal(scrollThreshold.upperThreshold, 100, 'upperThreshold');
+    assert.equal(scrollThreshold.lowerThreshold, 100, 'lowerThreshold');
+    assert.equal(scrollThreshold.horizontal, false, 'horizontal');
+    assert.equal(window.getComputedStyle(scrollThreshold.scrollTarget).overflow, 'auto', 'overflow');
+  });
+
+  test('upper-threshold event', function(done) {
+    flush(function() {
+      scrollThreshold.addEventListener('upper-threshold', function() {
+        assert.isTrue(scrollThreshold.upperTriggered);
+        done();
       });
+      assert.isTrue(scrollThreshold.upperTriggered);
 
-      teardown(function() {
-        scrollThreshold.clearTriggers();
-        scrollThreshold._scrollTop = 0;
-      });
-
-      test('default', function() {
-        assert.equal(scrollThreshold._defaultScrollTarget, scrollThreshold, '_defaultScrollTarget');
-        assert.equal(scrollThreshold.scrollTarget, scrollThreshold, 'scrollTarget');
-        assert.equal(scrollThreshold.upperThreshold, 100, 'upperThreshold');
-        assert.equal(scrollThreshold.lowerThreshold, 100, 'lowerThreshold');
-        assert.equal(scrollThreshold.horizontal, false, 'horizontal');
-        assert.equal(window.getComputedStyle(scrollThreshold.scrollTarget).overflow, 'auto', 'overflow');
-      });
-
-      test('upper-threshold event', function(done) {
-        flush(function() {
-          scrollThreshold.addEventListener('upper-threshold', function() {
-            assert.isTrue(scrollThreshold.upperTriggered);
-            done();
-          });
-          assert.isTrue(scrollThreshold.upperTriggered);
-
-          scrollThreshold.clearTriggers();
-          scrollThreshold._scrollTop = scrollThreshold._scrollTop + 1;
-        });
-      });
-
-      test('lower-threshold event', function(done) {
-        flush(function() {
-          scrollThreshold.addEventListener('lower-threshold', function() {
-            assert.isTrue(scrollThreshold.lowerTriggered);
-            done();
-          });
-          scrollThreshold._scrollTop = scrollThreshold.scrollTarget.scrollHeight;
-        });
-      });
-
-      test('clearTriggers', function(done) {
-        flush(function() {
-          assert.isTrue(scrollThreshold.upperTriggered);
-          scrollThreshold.clearTriggers();
-          assert.isFalse(scrollThreshold.upperTriggered);
-          done();
-        });
-      });
-
-      test('checkScrollThresholds', function(done) {
-        flush(function() {
-          scrollThreshold._scrollTop = scrollThreshold.scrollTarget.scrollHeight;
-
-          assert.isFalse(scrollThreshold.lowerTriggered, 'check assumption');
-          scrollThreshold.checkScrollThresholds();
-          assert.isTrue(scrollThreshold.lowerTriggered, 'check triggers');
-          scrollThreshold.clearTriggers();
-          assert.isFalse(scrollThreshold.lowerTriggered, 'reset triggers');
-          done();
-        });
-      });
-
-      test('horizontal', function(done) {
-        scrollThreshold.horizontal = true;
-        flush(function() {
-          scrollThreshold.clearTriggers();
-          scrollThreshold._scrollLeft = scrollThreshold.scrollTarget.scrollWidth;
-
-          assert.isFalse(scrollThreshold.lowerTriggered, 'check assumption');
-          scrollThreshold.checkScrollThresholds();
-          assert.isTrue(scrollThreshold.lowerTriggered, 'check lowerTriggered');
-          scrollThreshold._scrollLeft = 0;
-          scrollThreshold.checkScrollThresholds();
-          assert.isTrue(scrollThreshold.upperTriggered, 'upperTriggered');
-          done();
-        });
-      });
+      scrollThreshold.clearTriggers();
+      scrollThreshold._scrollTop = scrollThreshold._scrollTop + 1;
     });
+  });
 
-    suite('document scroll', function() {
-      var scrollThreshold;
-
-      setup(function() {
-        scrollThreshold = fixture('trivialDocumentScrolling');
+  test('lower-threshold event', function(done) {
+    flush(function() {
+      scrollThreshold.addEventListener('lower-threshold', function() {
+        assert.isTrue(scrollThreshold.lowerTriggered);
+        done();
       });
-
-      teardown(function() {
-        scrollThreshold.clearTriggers();
-        scrollThreshold._scrollTop = 0;
-      });
-
-      test('default', function() {
-        assert.equal(scrollThreshold.scrollTarget, scrollThreshold._doc, 'scrollTarget');
-        assert.equal(scrollThreshold.upperThreshold, 100, 'upperThreshold');
-        assert.equal(scrollThreshold.lowerThreshold, 100, 'lowerThreshold');
-        assert.equal(scrollThreshold.horizontal, false, 'horizontal');
-      });
-
-      test('upper-threshold event', function(done) {
-        flush(function() {
-          scrollThreshold.addEventListener('upper-threshold', function() {
-            assert.isTrue(scrollThreshold.upperTriggered);
-            done();
-          });
-          assert.isTrue(scrollThreshold.upperTriggered);
-
-          scrollThreshold.clearTriggers();
-          scrollThreshold._scrollTop = scrollThreshold._scrollTop + 1;
-        });
-      });
-
-      test('lower-threshold event', function(done) {
-        flush(function() {
-          scrollThreshold.addEventListener('lower-threshold', function() {
-            assert.isTrue(scrollThreshold.lowerTriggered);
-            done();
-          });
-          scrollThreshold._scrollTop = scrollThreshold.scrollTarget.scrollHeight;
-        });
-      });
-
-      test('clearTriggers', function(done) {
-        flush(function() {
-          assert.isTrue(scrollThreshold.upperTriggered);
-          scrollThreshold.clearTriggers();
-          assert.isFalse(scrollThreshold.upperTriggered);
-          done();
-        });
-      });
-
-      test('checkScrollThresholds', function(done) {
-        flush(function() {
-          scrollThreshold._scrollTop = scrollThreshold.scrollTarget.scrollHeight;
-
-          assert.isFalse(scrollThreshold.lowerTriggered, 'check assumption');
-          scrollThreshold.checkScrollThresholds();
-          assert.isTrue(scrollThreshold.lowerTriggered, 'check triggers');
-          scrollThreshold.clearTriggers();
-          assert.isFalse(scrollThreshold.lowerTriggered, 'reset triggers');
-          done();
-        });
-      });
-
-      test('horizontal', function(done) {
-        scrollThreshold.horizontal = true;
-        flush(function() {
-          scrollThreshold.clearTriggers();
-          scrollThreshold._scrollLeft = scrollThreshold.scrollTarget.scrollWidth;
-
-          assert.isFalse(scrollThreshold.lowerTriggered, 'check assumption');
-          scrollThreshold.checkScrollThresholds();
-          assert.isTrue(scrollThreshold.lowerTriggered, 'check lowerTriggered');
-          scrollThreshold._scrollLeft = 0;
-          scrollThreshold.checkScrollThresholds();
-          assert.isTrue(scrollThreshold.upperTriggered, 'upperTriggered');
-          done();
-        });
-      });
+      scrollThreshold._scrollTop = scrollThreshold.scrollTarget.scrollHeight;
     });
+  });
 
-  </script>
+  test('clearTriggers', function(done) {
+    flush(function() {
+      assert.isTrue(scrollThreshold.upperTriggered);
+      scrollThreshold.clearTriggers();
+      assert.isFalse(scrollThreshold.upperTriggered);
+      done();
+    });
+  });
+
+  test('checkScrollThresholds', function(done) {
+    flush(function() {
+      scrollThreshold._scrollTop = scrollThreshold.scrollTarget.scrollHeight;
+
+      assert.isFalse(scrollThreshold.lowerTriggered, 'check assumption');
+      scrollThreshold.checkScrollThresholds();
+      assert.isTrue(scrollThreshold.lowerTriggered, 'check triggers');
+      scrollThreshold.clearTriggers();
+      assert.isFalse(scrollThreshold.lowerTriggered, 'reset triggers');
+      done();
+    });
+  });
+
+  test('horizontal', function(done) {
+    scrollThreshold.horizontal = true;
+    flush(function() {
+      scrollThreshold.clearTriggers();
+      scrollThreshold._scrollLeft = scrollThreshold.scrollTarget.scrollWidth;
+
+      assert.isFalse(scrollThreshold.lowerTriggered, 'check assumption');
+      scrollThreshold.checkScrollThresholds();
+      assert.isTrue(scrollThreshold.lowerTriggered, 'check lowerTriggered');
+      scrollThreshold._scrollLeft = 0;
+      scrollThreshold.checkScrollThresholds();
+      assert.isTrue(scrollThreshold.upperTriggered, 'upperTriggered');
+      done();
+    });
+  });
+});
+
+suite('document scroll', function() {
+  var scrollThreshold;
+
+  setup(function() {
+    scrollThreshold = fixture('trivialDocumentScrolling');
+  });
+
+  teardown(function() {
+    scrollThreshold.clearTriggers();
+    scrollThreshold._scrollTop = 0;
+  });
+
+  test('default', function() {
+    assert.equal(scrollThreshold.scrollTarget, scrollThreshold._doc, 'scrollTarget');
+    assert.equal(scrollThreshold.upperThreshold, 100, 'upperThreshold');
+    assert.equal(scrollThreshold.lowerThreshold, 100, 'lowerThreshold');
+    assert.equal(scrollThreshold.horizontal, false, 'horizontal');
+  });
+
+  test('upper-threshold event', function(done) {
+    flush(function() {
+      scrollThreshold.addEventListener('upper-threshold', function() {
+        assert.isTrue(scrollThreshold.upperTriggered);
+        done();
+      });
+      assert.isTrue(scrollThreshold.upperTriggered);
+
+      scrollThreshold.clearTriggers();
+      scrollThreshold._scrollTop = scrollThreshold._scrollTop + 1;
+    });
+  });
+
+  test('lower-threshold event', function(done) {
+    flush(function() {
+      scrollThreshold.addEventListener('lower-threshold', function() {
+        assert.isTrue(scrollThreshold.lowerTriggered);
+        done();
+      });
+      scrollThreshold._scrollTop = scrollThreshold.scrollTarget.scrollHeight;
+    });
+  });
+
+  test('clearTriggers', function(done) {
+    flush(function() {
+      assert.isTrue(scrollThreshold.upperTriggered);
+      scrollThreshold.clearTriggers();
+      assert.isFalse(scrollThreshold.upperTriggered);
+      done();
+    });
+  });
+
+  test('checkScrollThresholds', function(done) {
+    flush(function() {
+      scrollThreshold._scrollTop = scrollThreshold.scrollTarget.scrollHeight;
+
+      assert.isFalse(scrollThreshold.lowerTriggered, 'check assumption');
+      scrollThreshold.checkScrollThresholds();
+      assert.isTrue(scrollThreshold.lowerTriggered, 'check triggers');
+      scrollThreshold.clearTriggers();
+      assert.isFalse(scrollThreshold.lowerTriggered, 'reset triggers');
+      done();
+    });
+  });
+
+  test('horizontal', function(done) {
+    scrollThreshold.horizontal = true;
+    flush(function() {
+      scrollThreshold.clearTriggers();
+      scrollThreshold._scrollLeft = scrollThreshold.scrollTarget.scrollWidth;
+
+      assert.isFalse(scrollThreshold.lowerTriggered, 'check assumption');
+      scrollThreshold.checkScrollThresholds();
+      assert.isTrue(scrollThreshold.lowerTriggered, 'check lowerTriggered');
+      scrollThreshold._scrollLeft = 0;
+      scrollThreshold.checkScrollThresholds();
+      assert.isTrue(scrollThreshold.upperTriggered, 'upperTriggered');
+      done();
+    });
+  });
+});
+</script>
 
 </body>
 </html>
