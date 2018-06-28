@@ -17,11 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-
-    <script type="module" src="../iron-scroll-threshold.js"></script>
-
-    <script type="module" src="./sample-content.js"></script>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2.0.0/webcomponents-loader.js"></script>
 
     <style>
       body {
@@ -94,28 +90,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
 
       <script type="module">
-import '../iron-scroll-threshold.js';
-import './sample-content.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-Polymer({
-  is: 'x-demo',
+        import '../iron-scroll-threshold.js';
+        import './sample-content.js';
+        import {Polymer} from '@polymer/polymer/lib/legacy/polymer-fn.js';
+        Polymer({
+          is: 'x-demo',
 
-  properties: {
-    size: {
-      type: Number,
-      value: 10
-    }
-  },
+          properties: {size: {type: Number, value: 10}},
 
-  loadMoreData: function() {
-    // Simulate network delay
-    setTimeout(function() {
-      this.size += 5;
-      this.$.scrollThreshold.clearTriggers();
-    }.bind(this), 500);
-  }
-});
-</script>
+          loadMoreData: function() {
+            // Simulate network delay
+            setTimeout(function() {
+              this.size += 5;
+              this.$.scrollThreshold.clearTriggers();
+            }.bind(this), 500);
+          }
+        });
+      </script>
 
     </dom-module>
 
