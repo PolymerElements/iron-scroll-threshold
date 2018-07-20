@@ -33,6 +33,32 @@ See: [Documentation](https://www.webcomponents.org/element/@polymer/iron-scroll-
 npm install --save @polymer/iron-scroll-threshold
 ```
 
+### In an html file
+```html
+<html>
+  <head>
+    <script type="module">
+      import '@polymer/iron-scroll-threshold/iron-scroll-threshold.js';
+    </script>
+  </head>
+  <body>
+    <iron-scroll-threshold id="ironScrollTheshold">
+      <div>content</div>
+    </iron-scroll-threshold>
+
+    <script>
+      const ironScrollTheshold = document.querySelector('#ironScrollTheshold');
+      ironScrollTheshold.addEventListener('lower-threshold', () => {
+        console.log('lower-threshold triggered');
+        // load async stuff. e.g. XHR
+        setTimeout(() => {
+          ironScrollTheshold.clearTriggers();
+        });
+      });
+    </script>
+  </body>
+</html>
+```
 ### In a Polymer 3 element
 ```js
 import {PolymerElement, html} from '@polymer/polymer';
@@ -48,6 +74,7 @@ class SampleElement extends PolymerElement {
   }
 
   _loadMoreData: function() {
+    console.log('lower-threshold triggered');
     // load async stuff. e.g. XHR
     setTimeout(() => {
       this.$.ironScrollTheshold.clearTriggers();
