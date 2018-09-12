@@ -27,6 +27,6 @@
   "author": "The Polymer Authors",
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
-    "@polymer/iron-scroll-target-behavior": "^3.0.0-pre.24"
+    "@polymer/iron-scroll-target-behavior": "^3.0.0-pre.25"
   }
 }
