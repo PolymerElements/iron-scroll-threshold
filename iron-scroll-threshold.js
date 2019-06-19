@@ -74,12 +74,12 @@ value to disable events and clear the associated triggered property.
 </iron-scroll-threshold>
 ```
 
-@group Iron Element
 @element iron-scroll-threshold
 @demo demo/scrolling-region.html Scrolling Region
 @demo demo/document.html Document Element
 */
 Polymer({
+  /** @override */
   _template: html`
     <style>
       :host {
